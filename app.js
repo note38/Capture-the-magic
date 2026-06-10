@@ -6,7 +6,7 @@
    ===================================================== */
 
 const CONFIG = {
-  cloudName:    "YOUR_CLOUD_NAME",      // e.g. "my-cloud-abc123"
+  cloudName:    "dr1mk4f7r",            // e.g. "my-cloud-abc123"
   uploadPreset: "YOUR_UPLOAD_PRESET",   // e.g. "bday_upload"
   folder:       "18th-bday",            // Cloudinary folder name
   birthdayName: "Jewel",                // Birthday person's name (shown in hero)
