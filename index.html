@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Share your photos from the celebration! Upload your favorite moments and browse the gallery together." />
+  <title>✨ Happy 18th Birthday! — Share Your Photos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Dancing+Script:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Animated Background Particles -->
+  <div class="bg-particles" id="bgParticles"></div>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-glow glow-left"></div>
+    <div class="hero-glow glow-right"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">✨ You're invited to celebrate</p>
+      <h1 class="hero-name" id="heroName">Jewel's</h1>
+      <div class="hero-number">
+        <span class="hero-18">18</span>
+        <span class="hero-th">th</span>
+      </div>
+      <p class="hero-subtitle">Birthday</p>
+      <p class="hero-date" id="heroDate">June 13, 2026</p>
+
+      <div class="hero-divider">
+        <span class="divider-gem">💎</span>
+      </div>
+
+      <p class="hero-cta-text">Capture the magic — share your photos with everyone!</p>
+
+      <div class="hero-buttons">
+        <button class="btn btn-primary" id="btnGoUpload" onclick="switchTab('upload')">
+          <span class="btn-icon">📸</span> Upload a Photo
+        </button>
+        <button class="btn btn-ghost" id="btnGoGallery" onclick="switchTab('gallery')">
+          <span class="btn-icon">🖼️</span> View Gallery
+        </button>
+      </div>
+    </div>
+
+    <div class="hero-scroll-hint">
+      <span>scroll to upload</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content" id="mainContent">
+
+    <!-- Tab Navigation -->
+    <nav class="tab-nav" id="tabNav">
+      <div class="tab-nav-inner">
+        <button class="tab-btn active" id="tabBtnUpload" onclick="switchTab('upload')">
+          📸 Upload
+        </button>
+        <button class="tab-btn" id="tabBtnGallery" onclick="switchTab('gallery')">
+          🖼️ Gallery
+          <span class="gallery-count" id="galleryCount" style="display:none">0</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ===== UPLOAD TAB ===== -->
+    <section class="tab-panel active" id="panelUpload">
+      <div class="section-header">
+        <h2 class="section-title">Share Your Moments</h2>
+        <p class="section-sub">Drag &amp; drop your photos or tap to browse. Every memory matters! 💕</p>
+      </div>
+
+      <!-- Drop Zone -->
+      <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Upload photo area">
+        <div class="dropzone-icon">📷</div>
+        <p class="dropzone-title">Drop your photos here</p>
+        <p class="dropzone-sub">or tap to browse your camera roll</p>
+        <button class="btn btn-primary btn-small" id="btnBrowse" onclick="document.getElementById('fileInput').click()">
+          Choose Photos
+        </button>
+        <input type="file" id="fileInput" accept="image/*" multiple hidden />
+      </div>
+
+      <!-- File Preview Queue -->
+      <div class="preview-queue" id="previewQueue" style="display:none">
+        <h3 class="preview-queue-title">Ready to upload</h3>
+        <div class="preview-grid" id="previewGrid"></div>
+        <div class="upload-actions">
+          <button class="btn btn-ghost btn-small" id="btnClearQueue" onclick="clearQueue()">Clear All</button>
+          <button class="btn btn-primary" id="btnUpload" onclick="uploadAll()">
+            <span class="btn-icon">⬆️</span> Upload All
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="upload-progress" id="uploadProgress" style="display:none">
+        <div class="progress-info">
+          <span id="progressLabel">Uploading 1 of 3...</span>
+          <span id="progressPct">0%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <!-- Success State -->
+      <div class="upload-success" id="uploadSuccess" style="display:none">
+        <div class="success-icon">🎉</div>
+        <h3>Photos uploaded!</h3>
+        <p>Your memories have been added to the gallery.</p>
+        <div class="success-actions">
+          <button class="btn btn-ghost btn-small" onclick="resetUpload()">Upload More</button>
+          <button class="btn btn-primary btn-small" onclick="switchTab('gallery')">View Gallery</button>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div class="upload-tips">
+        <div class="tip-card">
+          <span class="tip-icon">🖼️</span>
+          <span>JPG, PNG, HEIC, WebP supported</span>
+        </div>
+        <div class="tip-card">
+          <span class="tip-icon">⚡</span>
+          <span>Up to 20 MB per photo</span>
+        </div>
+        <div class="tip-card">
+          <span class="tip-icon">📱</span>
+          <span>Multiple photos at once</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GALLERY TAB ===== -->
+    <section class="tab-panel" id="panelGallery">
+      <div class="section-header">
+        <h2 class="section-title">Party Gallery</h2>
+        <p class="section-sub" id="gallerySubtitle">All the beautiful moments from tonight 💕</p>
+      </div>
+
+      <!-- Gallery Controls -->
+      <div class="gallery-controls">
+        <button class="btn btn-ghost btn-small" id="btnRefresh" onclick="loadGallery()">
+          <span id="refreshIcon">🔄</span> Refresh
+        </button>
+        <span class="gallery-auto-refresh" id="autoRefreshLabel">Auto-refreshes every 30s</span>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Photos rendered by JS -->
+      </div>
+
+      <!-- Gallery Empty State -->
+      <div class="gallery-empty" id="galleryEmpty" style="display:none">
+        <div class="empty-icon">📷</div>
+        <h3>No photos yet!</h3>
+        <p>Be the first to share a memory.</p>
+        <button class="btn btn-primary btn-small" onclick="switchTab('upload')">Upload First Photo</button>
+      </div>
+
+      <!-- Gallery Loading State -->
+      <div class="gallery-loading" id="galleryLoading">
+        <div class="spinner"></div>
+        <p>Loading photos...</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" style="display:none">
+    <button class="lightbox-close" id="lightboxClose" onclick="closeLightbox()" aria-label="Close">&times;</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" onclick="lightboxNav(-1)" aria-label="Previous">&#8249;</button>
+    <button class="lightbox-nav lightbox-next" id="lightboxNext" onclick="lightboxNav(1)" aria-label="Next">&#8250;</button>
+    <div class="lightbox-content">
+      <img class="lightbox-img" id="lightboxImg" src="" alt="Party photo" />
+    </div>
+    <div class="lightbox-counter" id="lightboxCounter">1 / 12</div>
+  </div>
+
+  <!-- ===== CONFETTI CANVAS ===== -->
+  <canvas class="confetti-canvas" id="confettiCanvas"></canvas>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <p>Made with 💕 for a special night · Share the QR code with your friends!</p>
+    <p class="footer-small">Photos stored securely · Powered by Cloudinary &amp; GitHub Pages</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
