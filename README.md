@@ -24,7 +24,7 @@ const CONFIG = {
   cloudName:    "YOUR_CLOUD_NAME",    // ← paste your Cloud Name here
   uploadPreset: "YOUR_UPLOAD_PRESET", // ← paste your preset name here
   folder:       "18th-bday",          // ← Cloudinary folder (match your preset)
-  birthdayName: "Sofia",              // ← birthday person's name
+  birthdayName: "Jewel",              // ← birthday person's name
   partyDate:    "June 14, 2026",      // ← party date
 };
 ```

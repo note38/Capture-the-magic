@@ -1,10 +1,11 @@
+require('dotenv').config();
 const cloudinary = require('cloudinary').v2;
 
-// 1. Configure Cloudinary with inline credentials
+// 1. Configure Cloudinary with environment variables
 cloudinary.config({ 
-  cloud_name: 'dr1mk4f7r', 
-  api_key: '332752997996956', 
-  api_secret: 'o5ecTRWzbRTl7b8Pmv9hNwQvKgI' 
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 async function runCloudinaryTasks() {

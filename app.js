@@ -7,7 +7,7 @@
 
 const CONFIG = {
   cloudName:    "dr1mk4f7r",            // e.g. "my-cloud-abc123"
-  uploadPreset: "YOUR_UPLOAD_PRESET",   // e.g. "bday_upload"
+  uploadPreset: "bday_upload",          // e.g. "bday_upload"
   folder:       "18th-bday",            // Cloudinary folder name
   birthdayName: "Jewel",                // Birthday person's name (shown in hero)
   partyDate:    "June 13, 2026",        // Party date (shown in hero)
@@ -338,22 +338,17 @@ async function loadGallery() {
   }
 }
 
-/* Cloudinary List API (requires "Resource list" enabled in settings) */
+/* Fetch gallery from backend API */
 async function fetchCloudinaryPhotos() {
-  const url = `https://res.cloudinary.com/${CONFIG.cloudName}/image/list/${CONFIG.folder}.json`;
+  const url = '/api/gallery';
   const res = await fetch(url);
 
-  if (!res.ok) throw new Error(`Cloudinary list API returned ${res.status}`);
+  if (!res.ok) throw new Error(`Gallery API returned ${res.status}`);
 
   const data = await res.json();
-  const resources = data.resources || [];
+  if (!data.success) throw new Error(data.error || 'Unknown error');
 
-  return resources.map(r => ({
-    url:       `https://res.cloudinary.com/${CONFIG.cloudName}/image/upload/q_auto,f_auto,w_600/${r.public_id}`,
-    urlFull:   `https://res.cloudinary.com/${CONFIG.cloudName}/image/upload/q_auto,f_auto/${r.public_id}`,
-    publicId:  r.public_id,
-    createdAt: r.created_at,
-  })).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  return data.photos;
 }
 
 function renderGallery(grid, photos) {
